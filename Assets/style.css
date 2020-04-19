@@ -1,0 +1,21 @@
+ul{
+background-color: rgb(59, 57, 57);
+}
+
+h1{
+    color:white;
+}
+
+.city-search{
+    float:left;
+    padding: 30px;
+}
+
+.jumbotron{
+    
+}
+
+.container{
+    float:right;
+    padding: 30px;
+}

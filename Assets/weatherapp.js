@@ -8,34 +8,19 @@ if (storedCities !== null) {
     cities = storedCities;
 }
 
-var apiKey = "441eb15bfed2f8081dd8214ab58fbd5d"
-
-searchBtn.on("click", function(){
-
-    var city = citySearch.val().trim();
-
-    if (-1 == cities.indexOf(city)){
-        cities.push(city);
-    }
-
-    
-    getTodayWeather(city);
-    
-})
+var apiKey = "441eb15bfed2f8081dd8214ab58fbd5d";
 
 function getTodayWeather(city){
 
    
-    var queryURL = `http://api.openweathermap.org/data/2.5/weather?q=london&units=imperial&appid=${apiKey}`;
+    var queryURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
     var today = moment().format("(MM/" + "DD/" + "YY)");
           
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function(response){ 
-
-        console.log(response)
-        var zero = 0;
+  
         var icon = response.weather[0].icon;
         $(".city-date").text(`${response.name} ${today}`);
         $(".city-date").append(`<img src = " http://openweathermap.org/img/wn/${icon}@2x.png" alt = "weather icon"></img>`)
@@ -67,6 +52,7 @@ function getUVIndex(lat,lon){
     });
     
 }
+
 function get5DayWeather(lat,lon){
 
 
@@ -95,12 +81,72 @@ function get5DayWeather(lat,lon){
 
     });
 
-    
+}
+
+function get5DayWeather(lat,lon){
 
 
-        
+    var queryURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&appid=${apiKey}`
 
-    
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function(response){ 
+
+        for (var i = 0; i < 5; i++){
+
+            var forcast = $(`#day${i}`);
+            var day = moment().add((i+1),'days').format("MM/" + "DD/" + "YY");
+            var date = $(`<h5 class="card-title">${day}</h5>`);
+            var icon = $(`<img src = " http://openweathermap.org/img/wn/${response.daily[i].weather[0].icon}.png" alt = "weather icon"></img>`);
+            var temp = $(`<p class="card-text">Temp: ${response.daily[i].temp.day}°F</p>`);
+            var humidity = $(`<p class="card-text">Humidity: ${response.daily[i].humidity}%</p>`)
+            
+            
+            forcast.append(date);
+            forcast.append(icon);
+            forcast.append(temp);
+            forcast.append(humidity);
+        }
+
+    });
 
 }
+
+function renderCityButtons(){
+
+    cities.forEach(element => {
+        cityBtn = $(`<button type="button" class="btn btn-light city">${element}</button>`)
+        cityList.append(cityBtn);
+        
+    });
+}
+
+renderCityButtons();
+
+searchBtn.on("click", function(){
+
+    var city = citySearch.val().trim();
+
+    if (-1 == cities.indexOf(city)){
+        cities.push(city);
+        localStorage.setItem(JSON.stringify(cities),"cities")
+    }
+
+    
+    getTodayWeather(city);
+    
+});
+
+$(".city").on("click",function(){
+    var city = $(this).text();
+    getTodayWeather(city);
+})
+
+
+
+
+
+
+
     

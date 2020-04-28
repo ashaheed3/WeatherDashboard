@@ -13,7 +13,7 @@ var apiKey = "441eb15bfed2f8081dd8214ab58fbd5d";
 function getTodayWeather(city){
 
    
-    var queryURL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+    var queryURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
     var today = moment().format("(MM/" + "DD/" + "YY)");
           
     $.ajax({

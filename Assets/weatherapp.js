@@ -116,8 +116,10 @@ function get5DayWeather(lat,lon){
 function renderCityButtons(){
 
     cities.forEach(element => {
+        if (element != ""){
         cityBtn = $(`<button type="button" class="btn btn-light city">${element}</button>`)
         cityList.append(cityBtn);
+        }
         
     });
 }
@@ -130,7 +132,7 @@ searchBtn.on("click", function(){
 
     if (-1 == cities.indexOf(city)){
         cities.push(city);
-        localStorage.setItem(JSON.stringify(cities),"cities")
+        localStorage.setItem("cities",JSON.stringify(cities))
     }
 
     
